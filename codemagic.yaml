@@ -5,21 +5,23 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       java: 17
-      vars:
-        PACKAGE_NAME: "com.gssuraha.app"
     scripts:
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Make gradlew executable (if exists)
+        script: |
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+          fi
       - name: Build Android debug APK
         script: |
-          ./gradlew assembleDebug
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleDebug
+          else
+            # Fallback if gradlew is missing
+            gradle wrapper --gradle-version 8.2
+            ./gradlew assembleDebug
+          fi
     artifacts:
-      - app/build/outputs/apk/debug/*.apk
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com   # yahan apna email daal do (optional)
-        notify:
-          success: true
-          failure: false
+      - app/build/outputs/apk/**/*.apk
