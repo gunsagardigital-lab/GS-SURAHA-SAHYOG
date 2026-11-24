@@ -1,0 +1,36 @@
+GS Suraha App - Build Fix Notes
+================================
+
+Problems fixed in this version:
+1. Compile Error in GSSurahaApplication.java
+   - OneSignal.getNotifications().requestPermission(false, null);
+   - Fixed to: OneSignal.getNotifications().requestPermission(false, Continue.none());
+   - Added missing import: com.onesignal.Continue
+
+2. OneSignal dependency range updated from [5.1.0, 5.1.99] to [5.1.0, 5.99.99]
+   so newer 5.x versions can resolve.
+
+3. Explicit androidx.activity dependency added (for OnBackPressedCallback).
+
+How to open & build in Android Studio:
+--------------------------------------
+1. Extract this ZIP.
+2. Open Android Studio → Open an Existing Project → select the folder
+   "gssuraha-android-studio-working"
+3. Android Studio will ask to create Gradle Wrapper / download dependencies.
+   Click "OK" / "Sync Now".
+4. Wait for Gradle Sync to finish (first time takes 2-5 minutes).
+5. Then Build → Make Project  or  Build → Build Bundle(s) / APK(s) → Build APK(s)
+
+If Sync fails:
+- File → Settings → Build, Execution, Deployment → Build Tools → Gradle
+  → Use Gradle from: 'gradle-wrapper.properties' file (recommended)
+- Make sure JDK 17 is selected (File → Project Structure → SDK Location → JDK)
+
+Minimum requirements:
+- Android Studio Hedgehog (2023.1.1) or newer
+- JDK 17
+- Android SDK 34
+
+OneSignal App ID is already set in strings.xml:
+59946fe0-9a7d-4655-b314-73dcc097290f
